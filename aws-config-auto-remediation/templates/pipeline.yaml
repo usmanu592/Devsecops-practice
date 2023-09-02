@@ -1,0 +1,77 @@
+# step 1 Node allocation
+
+node('dev') 
+{
+stage('continuous Download') 
+  {
+    git 'https://github.com/mbahsamuel/maven.git'
+  }
+stage('continuous build') 
+  {
+    sh 'mvn package'
+  }
+stage('continuous depoy') 
+  {
+    sh 'scp /var/lib/jenkins/workspace/scriptedpipeline/webapp/target/webapp.war   ubuntu@172.31.37.250:/var/lib/tomcat9/webapps/qaenv.war'
+  }
+  stage('continuous delivery') 
+  {
+    sh 'scp /var/lib/jenkins/workspace/scriptedpipeline/webapp/target/webapp.war   ubuntu@172.31.43.5:/var/lib/tomcat9/webapps/prodenv.war'
+  }
+}
+
+# to set up qa and prod evn 
+# 1. Download tomcate 
+#   “sudo apt-get update”
+#   sudo apt-get install -y tomcat9
+#   sudo apt-get install -y tomcat9-admin
+#   cd /var/lib/
+#   sudo chmod -R o+w tomcat9/
+
+
+# go to dev server
+# generate jenkins keys you   
+# to generate these you have to get in as a jenkins user    "sudo su - jenkins" 
+# then generate a key with the below command
+# here you do "ssh-keygen -t rsa"
+#once keys generated here you can copy those keys now to the qa or prod in ~/.sss/. while here do ls
+# to copy the key cd ~/.ssh/ and do ls 
+# in the .ssh/ cat the "id_rsa.pb ""
+# you will see authorized_keys the vi authorized_keys and paste the keys you generated in the dev sever
+# to the qa and prod
+# go back to your jenkins sever and test passwordless connection
+# to test this you have to be in as the jenkins users...
+# ssh ubuntu@privateip
+
+
+
+
+
+
+
+
+
+
+/var/lib/jenkins/workspace/scriptedpipeline/webapp/target/webapp.war
+
+scp /var/lib/jenkins/workspace/scriptedpipeline/webapp/target/webapp.war   ubuntu@172.31.41.246:/var/lib/tomcat9/webapps/qaenv.war
+
+
+
+
+node('built-in')   
+{
+  stage('Continuous Download') 
+  {
+    git 'https://github.com/mbahsamuel/maven.git'
+  }
+  stage('Continuous Build') {
+    sh 'mvn package '
+  }
+  stage('Continuous Deploy') {
+    sh 'scp /var/lib/jenkins/workspace/scriptedpipeline/webapp/target/webapp.war   ubuntu@172.31.36.24:/var/lib/tomcat9/webapps/qaenv.war'
+  }
+   stage('Continuous Delivery') {
+    sh 'scp /var/lib/jenkins/workspace/scriptedpipeline/webapp/target/webapp.war   ubuntu@172.31.40.72:/var/lib/tomcat9/webapps/prodenv.war'
+  }
+}
