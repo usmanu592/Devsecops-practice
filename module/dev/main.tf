@@ -11,7 +11,7 @@ module "my_vpc" {
 module "my_ec2" {
  source = "../modules/ec2"  
  ec2_count = "1"
- ami_id = "ami-050e8a1e3661ac6b9"
+ ami_id = "ami-0230bd60aa48260c6"
  instance_type  = "t2.micro"
  subnet_id = "${module.my_vpc.subnet_id}"
  instance_tag = "desamist"
